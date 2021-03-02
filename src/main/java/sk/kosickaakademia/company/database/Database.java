@@ -12,9 +12,11 @@ import java.util.Properties;
 public class Database {
     Log log = new Log();
     /*
+
     private String url = "jdbc:mysql://itsovy.sk:3306/company";
     private String nameOfDatabase = "mysqluser";
     private String passwordOfDatabase = "Kosice2021!";
+
      */
 
     public Connection getConnection(){
