@@ -37,7 +37,7 @@ public class User {
         return age;
     }
 
-    public Gender isGender() {
+    public Gender getGender() {
         return gender;
     }
 
