@@ -20,6 +20,15 @@ public class App
         //System.out.println(database.insertNewUser(new User("Jan", "Jurkovsky", 18, 0)));
 
         List<User> list = database.getMale();
+
+        printListOfUsers(list);
+
+        System.out.println("*********");
+        list = database.getUsersByAge(20,60);
+        printListOfUsers(list);
+    }
+
+    public static void printListOfUsers(List<User> list){
         for(User user : list){
             System.out.println(user.getFname() + " " + user.getLname());
         }

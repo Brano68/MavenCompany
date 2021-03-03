@@ -122,4 +122,30 @@ public class Database {
         return null;
     }
 
+    public List<User> getUsersByAge(int from, int to){
+        List<User> list = new ArrayList<>();
+        String sql = "SELECT * FROM user WHERE age >= ? AND age <= ? ORDER BY age";
+        Connection con = getConnection();
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, from);
+            ps.setInt(2, to);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                String fname = rs.getString("fname");
+                String lname = rs.getString("lname");
+                int age = rs.getInt("age");
+                int id = rs.getInt("id");
+                int gender = rs.getInt("gender");
+                User user = new User(id, fname, lname, age, gender);
+                list.add(user);
+            }
+            closeConnection(con);
+            return list;
+        }catch (Exception e){
+            log.error(e.toString());
+        }
+        return null;
+    }
+
 }
