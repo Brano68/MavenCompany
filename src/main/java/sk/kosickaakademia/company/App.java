@@ -26,7 +26,24 @@ public class App
         System.out.println("*********");
         list = database.getUsersByAge(20,60);
         printListOfUsers(list);
+
+
+
+        System.out.println("+++++");
+        list = database.getAllUser();
+        printListOfUsers(list);
+
+
+        System.out.println("-----");
+        User user = database.getUserAccordingToTheID(5);
+        System.out.println(user.getFname() + " " + user.getLname());
+
     }
+
+
+
+
+
 
     public static void printListOfUsers(List<User> list){
         for(User user : list){

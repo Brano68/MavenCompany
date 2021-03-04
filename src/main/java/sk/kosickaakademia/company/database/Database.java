@@ -123,6 +123,9 @@ public class Database {
     }
 
     public List<User> getUsersByAge(int from, int to){
+        if(to<from){
+            return null;
+        }
         List<User> list = new ArrayList<>();
         String sql = "SELECT * FROM user WHERE age >= ? AND age <= ? ORDER BY age";
         Connection con = getConnection();
@@ -142,6 +145,53 @@ public class Database {
             }
             closeConnection(con);
             return list;
+        }catch (Exception e){
+            log.error(e.toString());
+        }
+        return null;
+    }
+
+    public List<User> getAllUser(){
+        List<User> list = new ArrayList<>();
+        String sql = "SELECT * FROM user";
+        Connection con = getConnection();
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                String fname = rs.getString("fname");
+                String lname = rs.getString("lname");
+                int age = rs.getInt("age");
+                int id = rs.getInt("id");
+                int gender = rs.getInt("gender");
+                User user = new User(id, fname, lname, age, gender);
+                list.add(user);
+            }
+            closeConnection(con);
+            return list;
+        }catch (Exception e){
+            log.error(e.toString());
+        }
+        return null;
+    }
+
+    public User getUserAccordingToTheID(int id){
+        String sql = "SELECT * FROM user WHERE id LIKE ?";
+        Connection con = getConnection();
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                String fname = rs.getString("fname");
+                String lname = rs.getString("lname");
+                int age = rs.getInt("age");
+                int idecko = rs.getInt("id");
+                int gender = rs.getInt("gender");
+                User user = new User(idecko, fname, lname, age, gender);
+                closeConnection(con);
+                return user;
+            }
         }catch (Exception e){
             log.error(e.toString());
         }
