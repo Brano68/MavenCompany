@@ -38,6 +38,14 @@ public class App
         User user = database.getUserAccordingToTheID(5);
         System.out.println(user.getFname() + " " + user.getLname());
 
+        ///
+        System.out.println("///////");
+        database.changeAge(5,55);
+
+        ////
+        list = database.getUser("B");
+        printListOfUsers(list);
+
     }
 
 
@@ -47,7 +55,8 @@ public class App
 
     public static void printListOfUsers(List<User> list){
         for(User user : list){
-            System.out.println(user.getFname() + " " + user.getLname());
+            //System.out.println(user.getFname() + " " + user.getLname());
+            System.out.println(user.toString());
         }
     }
 }
