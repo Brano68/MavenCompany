@@ -3,6 +3,7 @@ package sk.kosickaakademia.company;
 import sk.kosickaakademia.company.database.Database;
 import sk.kosickaakademia.company.entity.User;
 import sk.kosickaakademia.company.enumerator.Gender;
+import sk.kosickaakademia.company.util.Util;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class App
 {
     public static void main( String[] args )
     {
+        /*
         //System.out.println( "Hello World!" );
         Database database = new Database();
         //database.getConnection();
@@ -46,6 +48,13 @@ public class App
         list = database.getUser("B");
         printListOfUsers(list);
 
+         */
+        Util util = new Util();
+        //System.out.println(util.getCurrentDateTime());
+
+        //System.out.println(util.getJson(new User(5,"Brano", "Kovac", 18, 0)));
+        //System.out.println(util.getJson(new Database().getAllUser()));
+        System.out.println(util.normalizeName("jAnIcKo"));
     }
 
 

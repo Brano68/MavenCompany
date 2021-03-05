@@ -2,6 +2,7 @@ package sk.kosickaakademia.company.database;
 
 import sk.kosickaakademia.company.entity.User;
 import sk.kosickaakademia.company.log.Log;
+import sk.kosickaakademia.company.util.Util;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,12 +56,15 @@ public class Database {
     }
 
     public boolean insertNewUser(User user){
+        if(user == null){
+            return false;
+        }
         Connection con = getConnection();
         if(con != null){
             try {
                 PreparedStatement ps = con.prepareStatement(INSERTQUERY);
-                ps.setString(1, user.getFname());
-                ps.setString(2, user.getLname());
+                ps.setString(1, new Util().normalizeName(user.getFname()));
+                ps.setString(2, new Util().normalizeName(user.getLname()));
                 ps.setInt(3, user.getAge());
                 ps.setInt(4, user.getGender().getValue());
                 int result = ps.executeUpdate();
