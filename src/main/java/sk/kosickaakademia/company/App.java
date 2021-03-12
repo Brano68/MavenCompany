@@ -1,16 +1,22 @@
 package sk.kosickaakademia.company;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import sk.kosickaakademia.company.database.Database;
 import sk.kosickaakademia.company.entity.User;
 import sk.kosickaakademia.company.enumerator.Gender;
 import sk.kosickaakademia.company.util.Util;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Company project
  *
  */
+@SpringBootApplication
+@ComponentScan(basePackages = "sk.kosickaakademia.company.controller")
 public class App 
 {
     public static void main( String[] args )
@@ -49,12 +55,17 @@ public class App
         printListOfUsers(list);
 
          */
-        Util util = new Util();
+        //Util util = new Util();
         //System.out.println(util.getCurrentDateTime());
 
         //System.out.println(util.getJson(new User(5,"Brano", "Kovac", 18, 0)));
         //System.out.println(util.getJson(new Database().getAllUser()));
-        System.out.println(util.normalizeName("jAnIcKo"));
+        //System.out.println(util.normalizeName("jAnIcKo"));
+
+        //iny port 8083
+        SpringApplication app = new SpringApplication(App.class);
+        app.setDefaultProperties(Collections.<String, Object>singletonMap("server.port", "8083"));
+        app.run(args);
     }
 
 
