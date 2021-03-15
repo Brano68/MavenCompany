@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sk.kosickaakademia.company.database.Database;
+import sk.kosickaakademia.company.database.Statistic;
 import sk.kosickaakademia.company.entity.User;
 import sk.kosickaakademia.company.enumerator.Gender;
 import sk.kosickaakademia.company.log.Log;
@@ -89,11 +90,66 @@ public class Controller {
     @GetMapping("/user/age")
     public ResponseEntity<String> getUserAccordingToTheAge(@RequestParam(value="from") Integer from, @RequestParam(value="to") Integer to){
         //System.out.println(from + " " + to);
-        if(from == null || to == null || from < 1 || to < 1){
+        if(from == null || to == null || from < 1 || to < 1 || from > to){
             return ResponseEntity.status(400).contentType(MediaType.APPLICATION_JSON).body("Something wrong");
         }
         String json = new Util().getJson(new Database().getUsersByAge(from,to));
         return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body(json);
     }
+
+
+    //put - UPDATE
+    //user/4
+    @PutMapping("/user/{id}")
+    public ResponseEntity<String> changeAge(@PathVariable Integer id, @RequestBody String body){
+        Integer newAge = 0;
+        try {
+            JSONObject jsonObject = (JSONObject) (new JSONParser().parse(body));
+            newAge = Integer.parseInt(String.valueOf(jsonObject.get("newAge")));
+            //pozor ak nahodou by body obsahoval namiesto newAge by obsahoval napr newage alebo newAges
+            //tak metoda vracia nie objekt null ale string "null"
+            if(newAge == null){
+                return ResponseEntity.status(400).contentType(MediaType.APPLICATION_JSON).body("Something wrong");
+            }
+            boolean result = new Database().changeAge(id, newAge);
+            if(result){
+                return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body("Update was successfully");
+            }else{
+                return ResponseEntity.status(404).contentType(MediaType.APPLICATION_JSON).body("Something wrong");
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+    //get
+    //user?search=substring
+    @GetMapping("/user")
+    public ResponseEntity<String> getSubstring(@RequestParam(value="search") String substring){
+        if(substring == null){
+            return ResponseEntity.status(400).contentType(MediaType.APPLICATION_JSON).body("Something wrong");
+        }
+        List<User> list = new Database().getUser(substring);
+        if(list == null || list.isEmpty()){
+            return ResponseEntity.status(400).contentType(MediaType.APPLICATION_JSON).body("List empty");
+        }else{
+            String json = new Util().getJson(list);
+            return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body(json);
+        }
+    }
+
+    //get /
+    @GetMapping("/")
+    public ResponseEntity<String> getStatistic(){
+        String json = new Statistic().makeStatistic();
+        if(json == null){
+            return ResponseEntity.status(400).contentType(MediaType.APPLICATION_JSON).body("Something wrong");
+        }
+        return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body(json);
+    }
+
 
 }
