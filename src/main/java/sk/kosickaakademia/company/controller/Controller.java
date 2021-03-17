@@ -113,7 +113,7 @@ public class Controller {
             }
             boolean result = new Database().changeAge(id, newAge);
             if(result){
-                return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body("Update was successfully");
+                return ResponseEntity.status(204).contentType(MediaType.APPLICATION_JSON).body("Update was successfully");
             }else{
                 return ResponseEntity.status(404).contentType(MediaType.APPLICATION_JSON).body("Something wrong");
             }
@@ -151,5 +151,10 @@ public class Controller {
         return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body(json);
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<String> getTest(){
+        String json = "{\"test\":\"testik\"}";
+        return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body(json);
+    }
 
 }
