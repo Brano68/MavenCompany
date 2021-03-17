@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div{display: flex;
+            justify-content: center;}
+    </style>
+</head>
+<body>
+    <div>
+        <form>
+            <table>
+                <tr><td>First name:</td>
+                <td><input type="text" id="fname" required></td></tr>
+                <tr><td>Last name:</td>
+                <td><input type="text" id="lname" required></td></tr>
+                <tr><td>Age:</td>
+                <td><input type="number" id="age" min="1" max="99" required></td></tr>
+
+                <tr><td>Gender:</td>
+                <td><select id="gender">
+                    <option value="male">male</option>
+                    <option value="female">female</option>
+                    <option value="other">other</option>
+                </select></td></tr>
+
+                <tr><td><input type="reset" value="reset"></td>
+                <td><input type="button" value="Add user" onclick="send()"></td></tr>
+            </table>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        function send(){
+            //alert("Hello");
+            const fname = document.getElementById('fname').value;
+            const lname = document.getElementById('lname').value;
+            const age = parseInt(document.getElementById('age').value);
+            const gender = document.getElementById('gender').value;
+            //console.log(fname +" "+ lname +" "+ age +" "+ gender);
+
+            const obj = new Object();
+            obj.fname = fname;
+            obj.lname = lname;
+            obj.age = age;
+            obj.gender = gender;
+
+            //console.log(obj);
+
+            const jsonData = JSON.stringify(obj);
+            //console.log(jsonData);
+            
+                fetch('http://localhost:8083/user/new', {
+                    method: 'POST',
+                    headers: {
+                            'Content-Type': 'application/json'
+                            },
+                            mode:"no-cors",
+                        body: jsonData
+                    })
+                    .then(response => response.json)
+                    .catch(err => console.error(err))
+        
+}
+        
+    </script>
+</body>
+</html>
