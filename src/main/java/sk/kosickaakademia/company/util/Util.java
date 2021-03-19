@@ -7,7 +7,7 @@ import sk.kosickaakademia.company.entity.User;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-
+import java.util.Random;
 
 
 public class Util {
@@ -80,5 +80,26 @@ public class Util {
         String substring = name.substring(1,name.length()).toLowerCase();
         //System.out.println(substring);
         return name1+substring;
+    }
+
+    public String getToken(){
+        //40znakov a moze obsahovat male alebo velke pismena a cislice
+        String token = "";
+        Random random = new Random();
+        char znak;
+        for(int i = 0; i < 40; i++){
+            int randomNumber = random.nextInt(3);
+            if(randomNumber == 0){
+                znak = (char) (random.nextInt(57-48+1)+48);
+                token = token + znak;
+            }else if(randomNumber == 1){
+                znak = (char) (random.nextInt(90-65+1)+65);
+                token = token + znak;
+            }else{
+                znak = (char) (random.nextInt(122-97+1)+97);
+                token = token + znak;
+            }
+        }
+        return token;
     }
 }
