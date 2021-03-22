@@ -3,6 +3,7 @@ package sk.kosickaakademia.company.controller;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sk.kosickaakademia.company.log.Log;
@@ -19,7 +20,7 @@ public class SecretController {
 
     //secret
     @GetMapping("/secret")
-    public String secret(@RequestHeader("token") String tokenik){
+    public ResponseEntity<String> secret(@RequestHeader("token") String tokenik){
         System.out.println(tokenik);
         if(tokenik.startsWith("Bearer")){
             System.out.println("Zacina s B");
@@ -32,12 +33,12 @@ public class SecretController {
                // System.out.println(tokenik);
 
                 if(entry.getValue().equals(substringToken)){
-                   return "TOKEN IS OK";
+                    return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body("TOKEN OK");
                 }
             }
         }
         //System.out.println(tokenik);
-        return "BAD TOKEN";
+        return ResponseEntity.status(400).contentType(MediaType.APPLICATION_JSON).body("BAD OK");
     }
 
     @PostMapping("/login")
@@ -71,5 +72,38 @@ public class SecretController {
         }
 
         return ResponseEntity.status(400).body("Something wrong");
+    }
+
+    //logout
+    @PostMapping ("/logout")
+    public ResponseEntity<String> logout(@RequestHeader("token") String tok){
+            System.out.println("---" + tok + "---");
+            String login = "";
+            for(Map.Entry<String, String> entry : map.entrySet()) {
+                if(entry.getValue().equals(tok)){
+                    login = entry.getKey();
+                    map.remove(login);
+                    return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body("User has been logged out");
+                }
+            }
+            if(login.equals("")){
+                return ResponseEntity.status(400).contentType(MediaType.APPLICATION_JSON).body("User was not found");
+            }
+        return ResponseEntity.status(400).contentType(MediaType.APPLICATION_JSON).body("Something wrong");
+    }
+
+    //aj pre prihlasenych aj pre neprihlasenych
+    //student
+    @PostMapping("/student")
+    public ResponseEntity<String> student(@RequestHeader("token") String tok){
+        //over token
+        String login = "";
+        for(Map.Entry<String, String> entry : map.entrySet()) {
+            if(entry.getValue().equals(tok)){
+                login = entry.getKey();
+                return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body("Student of Kosicka Academy, name: " + login);
+            }
+        }
+        return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body("You are only a host user which is not a student");
     }
 }
