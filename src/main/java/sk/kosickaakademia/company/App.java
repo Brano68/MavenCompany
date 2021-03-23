@@ -21,6 +21,13 @@ public class App
 {
     public static void main( String[] args )
     {
+        //vypis co obsahuje pole Stringu args
+        if(args.length>0){
+            for(int i =0; i < args.length; i++){
+                System.out.println(args[i]);
+            }
+        }
+
         /*
         //System.out.println( "Hello World!" );
         Database database = new Database();
@@ -65,6 +72,7 @@ public class App
         //iny port 8083
         SpringApplication app = new SpringApplication(App.class);
         app.setDefaultProperties(Collections.<String, Object>singletonMap("server.port", "8083"));
+        //app.setDefaultProperties(Collections.<String, Object>singletonMap("server.port", args[0]));
         app.run(args);
     }
 
