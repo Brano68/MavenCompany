@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sk.kosickaakademia.company.log.Log;
+import sk.kosickaakademia.company.user.Login;
 import sk.kosickaakademia.company.util.Util;
 
 import java.util.HashMap;
@@ -54,6 +55,15 @@ public class SecretController {
                 new Log().error("Something wrong!!!");
                 return ResponseEntity.status(400).body("");
             }
+            //testovanie pokusov
+            Login login1 = new Login();
+            String result = login1.loginUser(login,password);
+            if(result.equals("User is blocked")){
+                return ResponseEntity.status(401).body("User is blocked");
+            }else if(result.equals("Wrong password")){
+                return ResponseEntity.status(401).body("Wrong password");
+            }
+            //
             if(password.equals(PASSWORDIK)){
                 String token = new Util().getToken();
                 map.put(login,token);
