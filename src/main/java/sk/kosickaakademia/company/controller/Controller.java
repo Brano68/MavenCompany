@@ -12,6 +12,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import sk.kosickaakademia.company.database.Database;
+import sk.kosickaakademia.company.database.DatabaseMongo;
 import sk.kosickaakademia.company.database.Statistic;
 import sk.kosickaakademia.company.entity.User;
 import sk.kosickaakademia.company.enumerator.Gender;
@@ -67,6 +68,8 @@ public class Controller {
             User user = new User(fname,lname,age,g.getValue());
 
             new Database().insertNewUser(user);
+            //mongo
+            new DatabaseMongo().insertUserIntoMongo(user);
             return ResponseEntity.status(201).contentType(MediaType.APPLICATION_JSON).body("User has been added");
         } catch (ParseException e) {
             e.printStackTrace();
@@ -261,6 +264,13 @@ public class Controller {
         //a poslanie riadku
         return ResponseEntity.status(200).contentType(MediaType.APPLICATION_XML).body(line);
 
+    }
+
+    @GetMapping("/backend")
+    public ResponseEntity<String> getAllUsersFromMongo(){
+        List<User> list = new DatabaseMongo().getAllUsersFromMongo();
+        String json = new Util().getJson(list);
+        return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body(json);
     }
 
 
